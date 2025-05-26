@@ -1,0 +1,125 @@
+openapi: 3.0.4
+info:
+  title: Linaflow Microservice
+  description: |-
+    Documentation of the endpoint from linaflow flask microservice
+  version: beta
+externalDocs:
+  description: Find out more about linaflow
+  url: https://github.com/linaflow
+paths:
+  /webscraper:
+    post:
+      tags:
+        - webscraper
+      summary: Communicate with web scraper.
+      operationId: commsWebScrapper
+      requestBody:
+        description: Communicate with web scraper.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebscraperRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebscraperResponse200'
+        '500':
+          description: Error on web scraper
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebscraperResponse500'
+                
+  /backend:
+    post:
+      tags:
+        - backend
+      summary: Communicate with the backend.
+      operationId: commsBackend
+      requestBody:
+        description: Communicate with the backend.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackendRequest'
+        required: true
+components:
+  schemas:
+    WebscraperRequest:
+      type: object
+      properties:
+        solicitation_id:
+          type: string
+          format: uuid
+          example: 5a3386c2-2d45-4894-8601-1e0708dad82c
+        flight_from:
+          type: string
+          example: GYN
+        flight_to:
+          type: string
+          example: GRU
+        lowest_cost:
+          type: number
+          example: 900.99
+        highest_cost:
+          type: number
+          example: 2000.30
+        start_date:  
+          type: string
+          format: date
+          example: '2025-05-11'
+        final_date:
+          type: string
+          format: date
+          example: '2025-05-22'
+        ticket_type:
+          type: string
+          example: economico
+        website:
+          type: string
+          example: https://latam.com.br
+        passengers:
+          type: object
+          properties:
+            adult:
+              type: integer
+              example: 2
+            child:
+              type: integer
+              example: 1
+            baby:
+              type: integer
+              example: 1
+    WebscraperResponse200:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: True
+    WebscraperResponse500:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: False
+        error:
+          type: string
+          example: An error ocurred on web scraper
+    BackendRequest:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: False
+        error:
+          type: string
+          example: An error ocurred
+        solicitation_id:
+          type: string
+          format: uuid
+          example: 3443269c-0c9b-45f9-a985-65adbad8802c
